@@ -1,0 +1,29 @@
+#!/usr/bin/env ruby
+require 'json'
+system "mkdir -p drafts.local"
+
+# Prefix is YYYY-MM-DD
+prefix = Time.now.strftime("%Y-%m-%d")
+
+# Load the state file
+state = begin
+  JSON.parse(File.read("drafts.local/state.json"))
+rescue
+  {}
+end
+
+# Search for the next available draft name
+i = 1
+
+if state.dig('latest', 'prefix') == prefix && state.dig('latest', 'number').is_a?(Integer)
+  i = state['latest']['number'] + 1
+end
+
+while File.exist?(draft_filename = "drafts.local/%s_%03d.md" % [prefix, i])
+  i += 1
+end
+
+puts "Reserved file name for your next draft: #{draft_filename}"
+puts "You can now write your draft in that file. Note that file does not exist yet."
+
+File.write('drafts.local/state.json', { 'latest' => { 'prefix' => prefix, 'number' => i } }.to_json)
