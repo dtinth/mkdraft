@@ -32,6 +32,7 @@ This approach is better than generating large content directly because it:
 
 The mkdraft command:
 - Takes **no arguments** - invoke as `mkdraft` directly
+- **IMPORTANT**: The command is already in your $PATH. Just run `mkdraft` from anywhere - do NOT cd to the skill directory
 - Manages numbered drafts automatically within each day
 - Handles file existence checking to avoid overwrites
 - Persists state in `drafts.local/state.json`
